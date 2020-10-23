@@ -1,6 +1,6 @@
 @font-face {
     font-family: "SFProDisplay-Regular";
-    src: local("SFProDisplay-Regular"), 
+    src: local("SFProDisplay-Regular"),
         url("../fonts/SFProDisplay-Regular.woff") format("woff"),
         url("../fonts/SFProDisplay-Regular.woff2") format("woff2");
     font-weight: normal;
@@ -61,7 +61,8 @@ body {
 }
 
 .input-group {
-    width: 237px;
+    max-width: 237px;
+    width: 60%;
     height: 32px;
     position: relative;
     background: #FFFFFF;
@@ -111,6 +112,10 @@ body {
 
 .search-input::placeholder {
     color: #BFBFBF;
+}
+
+.menu-toggle {
+    display: none;
 }
 
 .content {
@@ -302,11 +307,29 @@ body {
 .button {
     background: #FAAD14;
     border-radius: 4px;
+    border: none;
     text-decoration: none;
     color: #ffffff;
     font-size: 16px;
     line-height: 24px;
     padding: 13px;
+    cursor: pointer;
+}
+
+.button-outline {
+    background: #FFFFFF;
+    border: 1px solid #FFC53D;
+    border-radius: 4px;
+    color: #FFC53D;
+    padding-left: 16px;
+    padding-right: 16px;
+    cursor: pointer;
+}
+
+.button-outline .icon {
+    width: 14px;
+    height: 11px;
+    fill: #FFC53D;
 }
 
 .button-new-post {
@@ -386,4 +409,152 @@ body {
     line-height: 20px;
     text-align: center;
     color: #FFFFFF;
+}
+
+.add-post {
+    display: flex;
+    flex-direction: column;
+}
+
+.add-post .button-outline {
+    margin-right: 1%;
+}
+
+.add-title,
+.add-text {
+    background: #FFFFFF;
+    border: 1px solid #E8E8E8;
+    padding: 23px 30px;
+    margin-bottom: 16px;
+}
+
+.add-text {
+    min-height: 362px;
+}
+
+.add-button {
+    width: 100%;
+    max-width: 370px;
+    margin-right: 2%;
+}
+
+@media (max-width: 990px) {
+    .menu-toggle {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 20px;
+        margin-left: 12px;
+    }
+
+    .menu-toggle span {
+        height: 2px;
+        width: 100%;
+        background-color: #fff;
+    }
+
+    .header {
+        position: fixed;
+        z-index: 100;
+        left: 0;
+        right: 0;
+        top: 0;
+        width: 100%;
+    }
+
+    .content {
+        margin-top: 94px;
+        margin-bottom: 60px;
+    }
+
+    .sidebar {
+        position: fixed;
+        z-index: 101;
+        top: 64px;
+        right: 0;
+        bottom: 0;
+        max-width: 320px;
+        width: 100%;
+        height: calc(100% - 64px);
+        background-color: #fff;
+        box-shadow: 1px 1px 10 rgba(0, 0, 0, 0.15);
+        padding: 30px;
+        transform: translateX(100%);
+        transition: transform 0.2s;
+        overflow-y: auto;
+    }
+
+    .sidebar.visible {
+        transform: translateX(0);
+    }
+
+    .posts {
+        width: 100%;
+    }
+
+    .header-nav {
+        display: none;
+        /* margin-left: 0;
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        background: #FA8C16;
+        padding-top: 16px;
+        padding-bottom: 16px;
+        padding-left: 35px;
+        padding-right: 35px;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+        display: flex;
+        justify-content: space-between;
+        align-items: center; */
+    }
+
+    .header-menu {
+        width: 90%;
+        margin: auto;
+    }
+
+}
+
+@media (max-width: 676px) {
+    .add-buttons {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .add-button {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .add-post .button-outline {
+        margin-right: 0;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .post-footer {
+        flex-direction: column;
+    }
+
+    .post-author {
+        margin-top: 15px;
+    }
+
+    .author-avatar {
+        margin-left: 0;
+        margin-right: 10px;
+    }
+
+    .author-about {
+        order: 2;
+        text-align: left;
+    }
+
+    .add-button {
+        width: 100%;
+    }
 }
