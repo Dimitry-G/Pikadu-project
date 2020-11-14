@@ -1,3 +1,19 @@
+// Your web app's Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyDaQguDqrus2qlJND1EtbKndPfsgkFo6v4",
+    authDomain: "pikadu-glo.firebaseapp.com",
+    databaseURL: "https://pikadu-glo.firebaseio.com",
+    projectId: "pikadu-glo",
+    storageBucket: "pikadu-glo.appspot.com",
+    messagingSenderId: "466909278725",
+    appId: "1:466909278725:web:e8393e85a4348a8687e26c"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+console.log(firebase);
+
+
+
 // Создаём переменную, в которую положим кнопку меню
 let menuToggle = document.querySelector('#menu-toggle');
 // Создаём переменную, в которую положим меню
@@ -24,39 +40,58 @@ const editPhotoURL = document.querySelector('.edit-photo');
 const userAvatarElem = document.querySelector('.user-avatar');
 
 const postsWrapper = document.querySelector('.posts');
+const buttonNewPost = document.querySelector('.button-new-post');
+const addPostElem = document.querySelector('.add-post');
 
-const listUsers = [{
-        id: '01',
-        email: 'dima@gmail.com',
-        password: '12345',
-        displayName: 'DimaG'
-    },
-    {
-        id: '02',
-        email: 'amid@gmail.com',
-        password: '54321',
-        displayName: 'Amid'
-    },
-];
+const DEFAUL_PHOTO = userAvatarElem.src;
 
 const setUsers = {
     user: null,
+    initUser(handler) {
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                this.user = user;
+            } else {
+                this.user = null;
+            }
+            if (handler) {
+                handler();
+            }
+        });
+    },
     logIn(email, password, handler) {
         if (!regExpValidEmail.test(email)) {
             alert('Email not valid');
             return;
         }
-        const user = this.getUser(email);
-        if (user && user.password === password) {
-            this.authorizedUser(user);
-            handler();
-        } else {
-            alert('Invalid email or password');
-        }
+        firebase.auth()
+            .signInWithEmailAndPassword(email, password)
+            .catch(err => {
+                const errCode = err.code;
+                const errMessage = err.message;
+                if (errCode === 'auth/wrong-password') {
+                    console.log(errMessage);
+                    alert('Неверный пароль');
+                } else if (errCode === 'auth/user-not-found') {
+                    console.log(errMessage);
+                    alert('Пользователь не найден');
+                } else {
+                    alert(errMessage);
+                }
+                console.log(err);
+            });
+        // const user = this.getUser(email);
+        // if (user && user.password === password) {
+        //     this.authorizedUser(user);
+        //     if (handler) {
+        //         handler();
+        //     }
+        // } else {
+        //     alert('Invalid email or password');
+        // }
     },
-    logOut(handler) {
-        this.user = null;
-        handler();
+    logOut() {        
+        firebase.auth().signOut();
     },
     signUp(email, password, handler) {
         if (!regExpValidEmail.test(email)) {
@@ -67,56 +102,108 @@ const setUsers = {
             alert('Введите данные');
             return;
         }
-        if (!this.getUser(email)) {
-            const user = {
-                email,
-                password,
-                displayName: email.substring(0, email.search('@'))
-            };
-            listUsers.push(user);
-            this.authorizedUser(user);
-            handler();
-        } else {
-            alert('Пользователь с таким email уже зарегистрирован');
+        firebase.auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then((data) => {
+                this.editUser(email.substring(0, email.indexOf('@')), null, handler);
+            })
+            .catch((err) => {
+                const errCode = err.code;
+                const errMessage = err.message;
+                if (errCode === 'auth/weak-password') {
+                    console.log(errMessage);
+                    alert('Слабый пароль');
+                } else if (errCode === 'auth/email-already-in-use') {
+                    console.log(errMessage);
+                    alert('Этот имейл уже используется');
+                } else {
+                    alert(errMessage);
+                }
+                console.log(err);
+            });
+        // if (!this.getUser(email)) {
+        //     const user = {
+        //         email,
+        //         password,
+        //         displayName: email.substring(0, email.search('@'))
+        //     };
+        //     listUsers.push(user);
+        //     this.authorizedUser(user);
+        //     if (handler) {
+        //         handler();
+        //     }
+        // } else {
+        //     alert('Пользователь с таким email уже зарегистрирован');
+        // }
+    },
+    editUser(displayName, photoURL, handler) {
+        const user = firebase.auth().currentUser;
+        if (displayName) {
+            if (photoURL) {
+                user.updateProfile({
+                    displayName,
+                    photoURL
+                }).then(handler);
+            } else {
+                user.updateProfile({
+                    displayName
+                }).then(handler);
+            }           
         }
     },
-    editUser(userName, userPhoto, handler) {
-        if (userName) {
-            this.user.displayName = userName;
-        }
-        if (userPhoto) {
-            this.user.photo = userPhoto;
-        }
-        handler();
-    },
-    getUser(email) {
-        return listUsers.find(item => item.email === email);
-    },
-    authorizedUser(user) {
-        this.user = user;
+    // getUser(email) {
+    //     return listUsers.find(item => item.email === email);
+    // },
+    // authorizedUser(user) {
+    //     this.user = user;
+    // }
+    sendForget(email) {
+        firebase.auth().sendPasswordResetEmail(email)
+            .then(() => {
+                alert('Письмо отправлено');
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }
 };
 
+const loginForget = document.querySelector('.login-forget');
+
+loginForget.addEventListener('click', event => {
+    event.preventDefault();
+    setUsers.sendForget(emailInput.value);
+    emailInput.value = '';
+});
+
 const setPosts = {
-    allPosts: [{
-            title: 'Заголовок поста',
-            text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab distinctio sit consequuntur. Sed optio suscipit cumque possimus! Nesciunt, ipsum enim.',
-            tags: ['#xiaomi', ' #mi10', ' #top', ' #mobile'],
-            author: 'dima@gmail.com',
-            date: '11.11.2020, 20:54:00',
-            likes: 15,
-            comments: 20
-        },
-        {
-            title: 'Заголовок поста2',
-            text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab distinctio sit consequuntur. Sed optio suscipit cumque possimus! Nesciunt, ipsum enim.',
-            tags: ['#xiaomi', ' #mi10', ' #top', ' #mobile'],
-            author: 'amid@gmail.com',
-            date: '11.11.2020, 20:54:00',
-            likes: 15,
-            comments: 20
-        }
-    ]
+    allPosts: [],
+    addPost(title, text, tags, handler) {
+        const user = firebase.auth().currentUser;
+        this.allPosts.unshift({
+            id: `postID${(+new Date().toString(16))}-${user.uid}`,
+            title,
+            text,
+            tags: tags.split(',').map(item => item.trim()),
+            author: {
+                displayName: setUsers.user.displayName,
+                photo: setUsers.user.photoURL,
+            },
+            date: new Date().toLocaleString(),
+            likes: 0,
+            comments: 0,
+        });
+        firebase.database()
+            .ref('post')
+            .set(this.allPosts)
+            .then(() => this.getPosts(handler));
+    },
+    getPosts(handler) {
+        firebase.database().ref('post').on('value', snapshot => {
+            this.allPosts = snapshot.val() || [];
+            handler();
+        });
+    }
 };
 
 const toggleAuthDom = () => {
@@ -126,37 +213,32 @@ const toggleAuthDom = () => {
         loginElem.style.display = 'none';
         userElem.style.display = '';
         userNameElem.textContent = user.displayName;
-        userAvatarElem.src = user.photo || userAvatarElem.src;
+        userAvatarElem.src = user.photoURL || DEFAUL_PHOTO;
+        buttonNewPost.classList.add('visible');
     } else {
         loginElem.style.display = '';
         userElem.style.display = 'none';
+        buttonNewPost.classList.remove('visible');
+        addPostElem.classList.remove('visible');
+        postsWrapper.classList.add('visible');
     }
+};
+
+const showAddPost = () => {
+    addPostElem.classList.add('visible');
+    postsWrapper.classList.remove('visible');
 };
 
 const showAllPosts = () => {
     let postsHTML = '';
-    setPosts.allPosts.forEach(post => {
-        const {
-            title,
-            text,
-            tags,
-            likes,
-            comments,
-            date,
-            author
-        } = post;
+    setPosts.allPosts.forEach(({ title, text, date, tags, likes, comments, author }) => {     
         postsHTML += `
             <section class = "post">
                 <div class = "post-body">
                 <h2 class = "post-title">${title}</h2> 
-                <img class = "img-post"
-                    src = "img/mi10ultra.jpg"
-                    width = "300px"
-                    height = "200px"
-                    alt = "mi10ultra">
                     <p class = "post-text">${text}</p>
-                    <div class = "tags">
-                        <a href = "#" class = "tag">${tags}</a> 
+                    <div class = "tags">   
+                        ${tags.map(tag => `<a href="#${tag}" class="tag">#${tags}</a>`)}                         
                     </div> 
                 </div> 
                 <div class = "post-footer">
@@ -186,16 +268,18 @@ const showAllPosts = () => {
                     </div> 
                     <div class = "post-author">
                         <div class = "author-about">
-                            <a href = "" class = "author-username">${author}</a> 
+                            <a href = "" class = "author-username">${author.displayName}</a> 
                             <span class = "post-time">${date}</span> 
                         </div> 
-                        <div class = "a author-link"> <img src = "img/avatar.jpg" alt = "avatar" class = "author-avatar"> </div> 
+                        <div class = "a author-link"> <img src = ${author.photo || "img/avatar.jpg"} alt = "avatar" class = "author-avatar"> </div> 
                     </div> 
                 </div> 
             </section>
         `;
     });
     postsWrapper.innerHTML = postsHTML;
+    addPostElem.classList.remove('visible');
+    postsWrapper.classList.add('visible');
 };
 
 const init = () => {
@@ -215,7 +299,7 @@ const init = () => {
     });
     exitElem.addEventListener('click', event => {
         event.preventDefault();
-        setUsers.logOut(toggleAuthDom);
+        setUsers.logOut();
     });
     editElem.addEventListener('click', event => {
         event.preventDefault();
@@ -234,7 +318,28 @@ const init = () => {
         // вешаем класс на меню, когда кликаем по кнопке меню
         menu.classList.toggle('visible');
     });
-    showAllPosts();
-    toggleAuthDom();
+    buttonNewPost.addEventListener('click', event => {
+        event.preventDefault();
+        showAddPost();
+    });
+    addPostElem.addEventListener('submit', event => {
+        event.preventDefault();
+        const formElements = addPostElem.elements;
+        const { title, text, tags } = formElements;
+        
+        if (title.value.lenght < 6) {
+            alert('Слишком короткий ззаголовок');
+            return;
+        }        
+        if (title.value.lenght < 50) {
+            alert('Слишком короткий пост');
+            return;
+        }
+        setPosts.addPost(title.value, text.value, tags.value, showAllPosts);
+        addPostElem.classList.remove('visible');
+        addPostElem.reset();
+    });
+    setUsers.initUser(toggleAuthDom);
+    setPosts.getPosts(showAllPosts);
 };
 document.addEventListener('DOMContentLoaded', init);

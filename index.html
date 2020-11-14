@@ -1,283 +1,210 @@
 <!DOCTYPE html>
 <html lang="ru">
 
+
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pikadu - Main Page</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/normalize.css">
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-app.js" defer></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-auth.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-database.js" defer></script>
     <script src="js/script.js" defer></script>
 </head>
 <!-- Шапка сайта -->
-<header class="header">
-    <div class="header-wrapper">
-        <a href="index.html" class="header-logo">
-            <img class="header-logo-image" src="img/logo.svg" alt="logo: Pikadu">
-        </a>
-        <nav class="header-nav">
-            <ul class="header-menu">
-                <li class="header-menu-item"><a href="#" class="header-menu-link">Свежее</a></li>
-                <li class="header-menu-item"><a href="#" class="header-menu-link">Лучшее</a></li>
-                <li class="header-menu-item"><a href="#" class="header-menu-link">Горячее</a></li>
-                <li class="header-menu-item"><a href="#" class="header-menu-link">Подписки</a></li>
-            </ul>
-        </nav>
-        <!-- /.header-nav -->
-        <div class="input-group search">
-            <input type="search" class="search-input" placeholder="Поиск по сайту">
-            <button class="search-button">
-                <img src="img/search.svg" alt="icon: search" class="search-icon">
-            </button>
+<body>
+    <header class="header">
+        <div class="header-wrapper">
+            <a href="index.html" class="header-logo">
+                <img class="header-logo-image" src="img/logo.svg" alt="logo: Pikadu">
+            </a>
+            <nav class="header-nav">
+                <ul class="header-menu">
+                    <li class="header-menu-item"><a href="#" class="header-menu-link">Свежее</a></li>
+                    <li class="header-menu-item"><a href="#" class="header-menu-link">Лучшее</a></li>
+                    <li class="header-menu-item"><a href="#" class="header-menu-link">Горячее</a></li>
+                    <li class="header-menu-item"><a href="#" class="header-menu-link">Подписки</a></li>
+                </ul>
+            </nav>
+            <!-- /.header-nav -->
+            <div class="input-group search">
+                <input type="search" class="search-input" placeholder="Поиск по сайту">
+                <button class="search-button">
+                    <img src="img/search.svg" alt="icon: search" class="search-icon">
+                </button>
+            </div>
+            <!-- /.input-group -->
+            <a href="#" class="menu-toggle" id="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </a>
         </div>
-        <!-- /.input-group -->
-        <a href="#" class="menu-toggle" id="menu-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </a>
+        <!-- /.header-wrapper -->
+    </header>
+    <div class="content">
+        <main class="posts">
+            <section class="post">
+                <div class="post-body">
+                    <h2 class="post-title">Mi 10 Ultra</h2>
+                    <div class="tags">
+                        <a href="#" class="tag">#xiaomi</a>
+                    </div>
+                </div>
+                <div class="post-footer">
+                    <div class="post-buttons">
+                        <button class="post-button likes">
+                            <svg width="19" height="20" class="icon icon-like">
+                                <use xlink:href="img/icons.svg#Like"></use>
+                            </svg>
+                            <span class="likes-counter">56</span>
+                        </button>
+                        <button class="post-button comments">
+                            <svg width="21" height="21" class="icon icon-comment">
+                                <use xlink:href="img/icons.svg#comment"></use>
+                            </svg>
+                            <span class="comments-counter">257</span>
+                        </button>
+                        <button class="post-button save">
+                            <svg width="19" height="19" class="icon icon-save">
+                                <use xlink:href="img/icons.svg#Save"></use>
+                            </svg>
+                        </button>
+                        <button class="post-button share">
+                            <svg width="17" height="19" class="icon icon-share">
+                                <use xlink:href="img/icons.svg#share-alt"></use>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="post-author">
+                        <div class="author-about">
+                            <a href="" class="author-username">arteislamov</a>
+                            <span class="post-time">5 минут назад</span>
+                        </div>
+                        <div class="a author-link"><img src="img/avatar.jpg" alt="avatar" class="author-avatar"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <!-- /.posts -->
+        <form action="#" class="add-post">
+            <input type="text" name="title" class="add-title" placeholder="Заголовок поста">
+            <textarea name="text" class="add-text" placeholder="Текст вашего поста"></textarea>
+            <input type="text" name="tags" class="add-tags" placeholder="Добавьте теги через запятую">
+            <div class="add-buttons">
+                <button type="submit" class="button add-button">
+                    <svg class="icon icon-fire">
+                        <use xlink:href="img/icons.svg#fire"></use>
+                    </svg>
+                    Опубликовать пост
+                </button>
+            </div>
+        </form>
+        <aside class="sidebar">
+            <div class="login">
+                <form class="login-form">
+                    <h2 class="login-title">Авторизация</h2>
+                    <input type="email" class="login-input login-email" name="email" minlength="3" required
+                        placeholder="Введите email">
+                    <input type="password" class="login-input login-password" name="password" minlength="3" required
+                        placeholder="Введите пароль">
+                    <a href="#" class="login-forget">Забыли пароль?</a>
+                    <button class="login-signin" type="submit">Войти</button>
+                    <a href="#" class="login-signup">Регистрация</a>
+                </form>
+            </div>
+            <div class="user">
+                <div class="user-container">
+                    <a href="#" class="user-info">
+                        <img width="40" height="40" src="img/avatar.jpg" alt="photo: user" class="user-avatar"><span
+                            class="user-name">arteislamov</span>
+                    </a>
+                    <!-- /.user-info -->
+                    <a href="#" class="edit">
+                        <svg width="17" height="19" class="icon-edit">
+                            <use xlink:href="img/icons.svg#edit-button"></use>
+                        </svg>
+                    </a> <!-- /.edit -->
+                    <a href="#" class="exit">
+                        <svg class="icon icon-exit">
+                            <use xlink:href="img/icons.svg#exit"></use>
+                        </svg>
+                    </a>
+                    <!-- /.exit -->
+                </div>
+                <!-- /.user-container -->
+                <form class="edit-container">
+                    <h2 class="edit-title">Редактировать профиль</h2>
+                    <label class="edit-label">Ваш логин
+                        <input type="text" class="edit-input edit-username" name="username" minlength="3"
+                            placeholder="логин" required>
+                    </label>
+                    <label class="edit-label">Ваш аватар
+                        <input type="text" class="edit-input edit-photo" name="photo" placeholder="URL-photo">
+                    </label>
+                    <button class="edit-btn">Сохранить</button>
+                    <!-- /.edit-label -->
+                </form>
+                <!-- /.edit-container -->
+            </div>
+            <!-- /.user -->
+            <nav class="sidebar-nav">
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item">
+                        <a href="#" class="sidebar-menu-link">Ответы</a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="#" class="sidebar-menu-link active">Комментарии</a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="#" class="sidebar-menu-link">Оценки</a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="#" class="sidebar-menu-link">Сохранённое</a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="#" class="sidebar-menu-link">Подписки</a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="#" class="sidebar-menu-link">Заметки</a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="#" class="sidebar-menu-link">Игнор-лист</a>
+                    </li>
+                </ul>
+            </nav>
+            <a href="new-post.html" class="button button-new-post">
+                <svg class="icon icon-fire">
+                    <use xlink:href="img/icons.svg#fire"></use>
+                </svg>
+                Опубликовать пост
+            </a>
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Комментарий дня</h2>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <a href="#" class="card-body-title">Как обмануть банкомат, если вы хотите снять больше наличных</a>
+                    <p class="card-text">Таким образом укрепление и развитие структуры требуют от нас анализа форм
+                        развития.
+                        Не следует, однако забывать, что реализация намеченных плановых заданий требуют от нас анализа
+                        позиций, занимаемых участниками в отношении поставленных задач. Задача организации, в
+                        особенности же
+                        консультация...</p>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+            <a href="#" class="promo"></a>
+        </aside>
+        <!-- /.sidebar -->
     </div>
-    <!-- /.header-wrapper -->
-</header>
-
-<div class="content">
-    <main class="posts">
-        <section class="post">
-            <div class="post-body">
-                <h2 class="post-title">Mi 10 Ultra</h2>
-                <img class="img-post" src="img/mi10ultra.jpg" width="300px" height="200px" alt="mi10ultra">
-                <div class="tags">
-                    <a href="#" class="tag">#xiaomi</a>
-                </div>
-            </div>
-            <div class="post-footer">
-                <div class="post-buttons">
-                    <button class="post-button likes">
-                        <svg width="19" height="20" class="icon icon-like">
-                            <use xlink:href="img/icons.svg#Like"></use>
-                        </svg>
-                        <span class="likes-counter">56</span>
-                    </button>
-                    <button class="post-button comments">
-                        <svg width="21" height="21" class="icon icon-comment">
-                            <use xlink:href="img/icons.svg#comment"></use>
-                        </svg>
-                        <span class="comments-counter">257</span>
-                    </button>
-                    <button class="post-button save">
-                        <svg width="19" height="19" class="icon icon-save">
-                            <use xlink:href="img/icons.svg#Save"></use>
-                        </svg>
-                    </button>
-                    <button class="post-button share">
-                        <svg width="17" height="19" class="icon icon-share">
-                            <use xlink:href="img/icons.svg#share-alt"></use>
-                        </svg>
-                    </button>
-                </div>
-                <div class="post-author">
-                    <div class="author-about">
-                        <a href="" class="author-username">arteislamov</a>
-                        <span class="post-time">5 минут назад</span>
-                    </div>
-                    <div class="a author-link"><img src="img/avatar.jpg" alt="avatar" class="author-avatar"></div>
-                </div>
-            </div>
-        </section>
-        <section class="post">
-            <div class="post-body">
-                <h2 class="post-title">Mi Mix 2S</h2>
-                <img class="img-post" src="img/mimix2s.jpg" width="300px" height="200px" alt="mimix2s">
-                <p class="post-text">Halfway into the Mi Mix 2's product cycle, Xiaomi releases the Mi Mix 2S, an
-                    incremental update to the Mix 2, or a successor and a half to the original Mi Mix. The Mix was the
-                    first smartphone to push Android’s limits by incorporating a display that was taller than 16:9, thus
-                    calling for Android to change its design rules and introducing OEMs with a new hardware dimension to
-                    play around with.
-
-                    The Mi Mix 2S is a step forward for the Mix series in that it puts a stronger focus on the overall
-                    camera experience (it has a brighter f/1.8 and larger 1.4 micron pixels). Despite its premium
-                    hardware design, Xiaomi manages to keep the phone’s cost below the entry-level iPhone price, and the
-                    camera department was a cost-effective element on the previous Mix devices. The Mi Mix 2S got an
-                    overall score of 97 with DxO Mark so we certainly have high expectations from this camera.
-
-                    Camera aside, the Mi Mix 2S does not have too many physical differences against the Mi Mix 2. The
-                    display is the same 6-inch display with an 18:9 aspect ratio with an IPS LCD display panel. Although
-                    the handset’s footprint is barely smaller than the Mi Mix 2, the Mix 2S is less than half a mm
-                    thicker to accommodate a Qi wireless charging coil - the first one on any Xiaomi device ever and the
-                    first on any smartphone with a ceramic back.</p>
-                <p class="post-text">Xiaomi Mi Mix 2S Specs
-                    Body: Aluminum frame, ceramic back, 2.5D Gorilla Glass 4
-                    Screen: 6.0-inch IPS LCD, 18:9, FHD+, 403 ppi, rounded corners
-                    Rear camera: 12MP (Sony IMX363) 1.4μm, f/1.8 + 12MP telephoto (Samsung S5K3M3) 1.0μm, f/2.4, 2X
-                    optical zoom, dual pixel autofocus, dual-LED flash, AI scene detection
-                    Video recording: 4K video recording @30fps, 1080p @30fps, High frame rate: 1080p @ 120fps or 720p @
-                    240fps, OIS main camera only
-                    Front Camera: Below-display 5MP 1.12μm, f/2.0, 1080p@30fps
-                    Chipset: Qualcomm Snapdragon 845, Kryo 385 (8x custom Cortex-A75 @ up to 2.8GHz), Adreno 630GPU
-                    Memory: 6GB + 64GB/128GB or 8GB + 256GB (non-expandable memory)
-                    OS: Android 8.0 Oreo with MIUI 9.5
-                    Battery: 3,400 mAh; Quick Charge 3.0
-                    Connectivity: dual nanoSIM with dual 4G, VoLTE, 4X4 MIMO, Cat. 18 LTE speeds (1.2Gbps), dual-band
-                    Wi-Fi 802.11ac, Bluetooth 5.0, GPS/GLONASS, NFC, USB 2.0 Type-C
-                    Audio: Mono loudspeaker
-                    Misc: Rear-mounted fingerprint scanner, ultrasonic proximity sensor, Qi Wireless charging</p>
-                <div class="tags">
-                    <a href="#" class="tag">#xiaomi</a>
-                    <a href="#" class="tag">#mix2s</a>
-                    <a href="#" class="tag">#top</a>
-                    <a href="#" class="tag">#mobile</a>
-                </div>
-                <!-- /.tags -->
-            </div>
-            <!-- /.post-body -->
-            <div class="post-footer">
-                <div class="post-buttons">
-                    <button class="post-button likes">
-                        <svg width="19" height="20" class="icon icon-like">
-                            <use xlink:href="img/icons.svg#Like"></use>
-                        </svg>
-                        <span class="likes-counter">56</span>
-                    </button>
-                    <button class="post-button comments">
-                        <svg width="21" height="21" class="icon icon-comment">
-                            <use xlink:href="img/icons.svg#comment"></use>
-                        </svg>
-                        <span class="comments-counter">187</span>
-                    </button>
-                    <button class="post-button save">
-                        <svg width="19" height="19" class="icon icon-save">
-                            <use xlink:href="img/icons.svg#Save"></use>
-                        </svg>
-                    </button>
-                    <button class="post-button share">
-                        <svg width="17" height="19" class="icon icon-share">
-                            <use xlink:href="img/icons.svg#share-alt"></use>
-                        </svg>
-                    </button>
-                </div>
-                <!-- /.post-buttons -->
-                <div class="post-author">
-                    <div class="author-about">
-                        <a href="" class="author-username">arteislamov</a>
-                        <span class="post-time">53 минуты назад</span>
-                    </div>
-                    <div class="a author-link"><img src="img/avatar.jpg" alt="avatar" class="author-avatar"></div>
-                </div>
-                <!-- /.post-author -->
-            </div>
-        </section>
-    </main>
-    <!-- /.posts -->
-    <aside class="sidebar">
-
-        <div class="login">
-            <form class="login-form">
-                <h2 class="login-title">Авторизация</h2>
-
-                <input type="email" class="login-input login-email" name="email" minlength="3" required
-                    placeholder="Введите email">
-
-                <input type="password" class="login-input login-password" name="password" minlength="3" required
-                    placeholder="Введите пароль">
-
-                <a href="#" class="login-forget">Забыли пароль?</a>
-
-                <button class="login-signin" type="submit">Войти</button>
-
-                <a href="#" class="login-signup">Регистрация</a>
-
-            </form>
-        </div>
-
-        <div class="user">
-            <div class="user-container">
-                <a href="#" class="user-info">
-                    <img width="40" height="40" src="img/avatar.jpg" alt="photo: user" class="user-avatar"><span
-                        class="user-name">arteislamov</span>
-                </a>
-                <!-- /.user-info -->
-                <a href="#" class="edit">
-                    <svg width="17" height="19" class="icon-edit">
-                        <use xlink:href="img/icons.svg#edit-button"></use>
-                    </svg>
-                </a> <!-- /.edit -->
-                <a href="#" class="exit">
-                    <svg class="icon icon-exit">
-                        <use xlink:href="img/icons.svg#exit"></use>
-                    </svg>
-                </a>
-                <!-- /.exit -->
-            </div>
-            <!-- /.user-container -->
-            <form class="edit-container">
-                <h2 class="edit-title">Редактировать профиль</h2>
-
-                <label class="edit-label">Ваш логин
-                    <input type="text" class="edit-input edit-username" name="username" minlength="3"
-                        placeholder="логин" required>
-                </label>
-
-                <label class="edit-label">Ваш аватар
-                    <input type="text" class="edit-input edit-photo" name="photo" placeholder="URL-photo">
-                </label>
-
-                <button class="edit-btn">Сохранить</button>
-                <!-- /.edit-label -->
-            </form>
-            <!-- /.edit-container -->
-        </div>
-        <!-- /.user -->
-        <nav class="sidebar-nav">
-            <ul class="sidebar-menu">
-                <li class="sidebar-menu-item">
-                    <a href="#" class="sidebar-menu-link">Ответы</a>
-                </li>
-                <li class="sidebar-menu-item">
-                    <a href="#" class="sidebar-menu-link active">Комментарии</a>
-                </li>
-                <li class="sidebar-menu-item">
-                    <a href="#" class="sidebar-menu-link">Оценки</a>
-                </li>
-                <li class="sidebar-menu-item">
-                    <a href="#" class="sidebar-menu-link">Сохранённое</a>
-                </li>
-                <li class="sidebar-menu-item">
-                    <a href="#" class="sidebar-menu-link">Подписки</a>
-                </li>
-                <li class="sidebar-menu-item">
-                    <a href="#" class="sidebar-menu-link">Заметки</a>
-                </li>
-                <li class="sidebar-menu-item">
-                    <a href="#" class="sidebar-menu-link">Игнор-лист</a>
-                </li>
-            </ul>
-        </nav>
-        <a href="new-post.html" class="button button-new-post">
-            <svg class="icon icon-fire">
-                <use xlink:href="img/icons.svg#fire"></use>
-            </svg>
-            Опубликовать пост
-        </a>
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Комментарий дня</h2>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-                <a href="#" class="card-body-title">Как обмануть банкомат, если вы хотите снять больше наличных</a>
-                <p class="card-text">Таким образом укрепление и развитие структуры требуют от нас анализа форм развития.
-                    Не следует, однако забывать, что реализация намеченных плановых заданий требуют от нас анализа
-                    позиций, занимаемых участниками в отношении поставленных задач. Задача организации, в особенности же
-                    консультация...</p>
-            </div>
-            <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
-        <a href="#" class="promo"></a>
-    </aside>
-    <!-- /.sidebar -->
-</div>
-
 </body>
 
 </html>

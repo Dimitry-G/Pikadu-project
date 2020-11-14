@@ -128,7 +128,12 @@ body {
 }
 
 .posts {
+    display: none;
     width: 67%;
+}
+
+.posts.visible {
+    display: block;
 }
 
 .post {
@@ -161,14 +166,19 @@ body {
 
 .tags {
     margin-bottom: 22px;
+    color: #BFBFBF;
 }
 
 .tag {
     color: #BFBFBF;
     font-size: 14px;
     line-height: 22px;
-    margin-right: 10px;
+    margin-left: 10px;
     text-decoration: none;
+}
+
+.tag:first-child {
+    margin-left: 0;
 }
 
 .post-footer {
@@ -227,6 +237,7 @@ body {
     height: 34px;
     margin-left: 9px;
     border-radius: 4px;
+    object-fit: cover;
 }
 
 .post-time {
@@ -458,6 +469,10 @@ body {
     margin-top: 20px;
 }
 
+.button-new-post.visible {
+    display: flex;
+}
+
 .icon-fire {
     width: 16px;
     height: 16px;
@@ -530,8 +545,13 @@ body {
 }
 
 .add-post {
-    display: flex;
+    display: none;
     flex-direction: column;
+    width: 67%;
+}
+
+.add-post.visible {
+    display: flex;
 }
 
 .add-post .button-outline {
@@ -539,7 +559,8 @@ body {
 }
 
 .add-title,
-.add-text {
+.add-text,
+.add-tags {
     background: #FFFFFF;
     border: 1px solid #E8E8E8;
     padding: 23px 30px;
